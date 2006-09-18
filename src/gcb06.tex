@@ -19,8 +19,8 @@
 
 \newcommand{\ignore}[1]{}
 
-\title[GCB 2006 - Microarray Layout as a Quadratic Assignment Problem] % (optional, use only with long paper titles)
-{Microarray Layout as a Quadratic Assignment Problem}
+\title[GCB 2006 - Microarray Layout and the Quadratic Assignment Problem] % (optional, use only with long paper titles)
+{Microarray Layout and\\the Quadratic Assignment Problem}
 
 %% \subtitle
 %% {Include Only If Paper Has a Subtitle}
@@ -315,6 +315,44 @@ Graduiertenkolleg Bioinformatik
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Border Length and Conflict Index}
+
+  \begin{block}{Redefine $\delta$ and $\omega$ as}
+    \footnotesize{
+    \[
+    \delta(p,p',t) :=
+    \left\{
+    \begin{array}{ll}
+    1 & \mbox{if $p'$ is a direct neighbor of $p$}\\
+      & \mbox{and is unmasked at step $t$}, \\
+    0 & \mbox{otherwise} \\
+    \end{array}
+    \right.
+    \]
+    %%
+    \[
+    \omega(p,t) :=
+    \left\{
+    \begin{array}{ll}
+    1/2 & \mbox{if $p$ is masked at step $t$}, \\
+    0   & \mbox{otherwise} \\
+    \end{array}
+    \right.
+    \]
+    }
+  \end{block}
+  
+  \begin{itemize}
+    \item Then $\sum_p\,\mathcal{C}(p) = \sum_{t=1}^T\, \mathcal{B}_t$
+    \item Border length and conflict indices are equivalent for this choice of
+          $\delta$ and $\omega$
+    \item For our choices, they are not equivalent but still \alert{correlated}:
+          a good layout has low border lengths and conflict indices
+  \end{itemize}
+
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{New Problem}
 
   \begin{block}{Conflict Index Minimization Problem}
@@ -353,20 +391,20 @@ Graduiertenkolleg Bioinformatik
     \end{itemize}
   \end{block}
 
-  \begin{block}{Re-embedding: Sequential (Kahng {\it et~al}., 2003)}
+  \begin{block}{Re-embedding: several algorithms (Kahng {\it et~al}., 2002, 2003)}
     \begin{itemize}
       \item Based on the Optimum Single Probe Embedding (OSPE)
       \begin{itemize}
         \item Re-embed a probe \alert{optimally} in regards to its neighbors
+        \item Dynamic programming, like a sequence alignment
       \end{itemize}
-      \item Spots are re-embedded in a pre-defined order
     \end{itemize}
   \end{block}
   
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Partitioning}
+\frame{\frametitle{Previous Work: Partitioning}
 
   \begin{itemize}
     \item The placement problem can be \alert{partitioned}
@@ -377,165 +415,175 @@ Graduiertenkolleg Bioinformatik
             \alert{recursively partitioned}
       \item A placement algorithm is called on each final sub-region
     \end{itemize}
-    \item Partitioning is a compromise but can reduce run-time and help the
-          placement algorithm
   \end{itemize}
 
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Partitioning}
-
-  \begin{block}{Partitioning: Centroid Quadrisection (Kahng {\it et~al}., 2003)}
-    \begin{itemize}
-      \item Heuristically select four probes maximizing the Hamming distance
-            between their embeddings: \alert{centroids}
-      \item Chip is divided into \alert{four quadrants}, each gets one centroid
-      \item Remaining probes $p$ are assigned to the quadrant whose centroid has
-            the minimum Hamming distance to $p$
-    \end{itemize}
-  \end{block}
-  
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{What's New?}
-
-  \begin{block}{Observation 1}
-     \begin{itemize}
-      \item Some probes have only a few possible embeddings
-      \begin{itemize}
-        \item Their embeddings cover most cycles of the deposition sequence
-      \end{itemize}
-      \item Others may have up to several million embeddings
-      \begin{itemize}
-        \item Particular embeddings may not serve as good centroids
-      \end{itemize}
-    \end{itemize}
-  \end{block}
-  
-  \begin{block}{Pivot Partitioning}
-    \begin{itemize}
-      \item Restrict the selection of centroids to probes with fewer embeddings:
-            \alert{pivots}
-      \begin{itemize}
-        \item Faster and better selection of centroids
-        \item Probes with more embeddings can more ``easily'' adapt to the
-              pivots
-      \end{itemize}
-    \end{itemize}
-  \end{block}
-
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{What's New?}
-
-  \begin{block}{Observation 2}
-    \begin{itemize}
-      \item The place and re-embed approach is inefficient
-      \begin{itemize}
-        \item Placement is based on embeddings that are likely to change
-      \end{itemize}
-    \end{itemize}
-  \end{block}
-
-  \begin{block}{Pivot Partitioning}
-    \begin{itemize}
-      \item Consider \alert{all embeddings} when assigning probes to sub-regions
-            (using OSPE)
-      \begin{itemize}
-        \item Better assignment of probes
-      \end{itemize}
-      \item \alert{Re-embed probes} in regards to the pivots \alert{before
-            placement} (OSPE again)
-      \begin{itemize}
-        \item Improve the ``alignment'' of the embeddings in the region
-      \end{itemize}      
-    \end{itemize}
-  \end{block}
-
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{What's New?}
-
-  \begin{block}{Observation 3}
-    \begin{itemize}
-      \item The quadrisection partitioning may force bad assignments in order to
-            ensure squared regions
-    \end{itemize}
-  \end{block}
-
-  \begin{block}{Pivot Partitioning}
+  \begin{block}{Pivot Partitioning (Carvalho \& Rahmann, 2006)}
     \begin{itemize}
       \item Alternate \alert{horizontal} and \alert{vertical} partitions
       \item Allow sub-regions to have different sizes
-      \begin{itemize}
-        \item Greater flexibility when assingning probes to sub-regions
-      \end{itemize}
     \end{itemize}
   \end{block}
 
-  \vspace*{0.5cm}
+  \vspace*{0.25cm}
   
-  \centerline{\includegraphics[width=\textwidth]{pics/pivotpart.jpg}}
+  \centerline{\includegraphics[width=0.8\textwidth]{pics/pivotpart.jpg}}
+  
+  %% \item Partitioning is a compromise but can reduce run-time and help the
+  %% placement algorithm
 
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Results on Random Chips}
+\frame{\frametitle{Quadratic Assignment Problem}
 
-  Using Row-epitaxial for the placement (with $Q = 20\,000$), followed by
-  Sequential re-embedding
+  \begin{block}{Definition}
+    \begin{itemize}
+      \item Given $n \times n$ real-valued matrices $F = (f_{ij})\geq 0$ and
+            $D = (d_{kl})\geq 0$
+      \item Find a permutation $\pi$ of $\{1, 2, \ldots n\}$ such that
+    \end{itemize}
+    \footnotesize{
+    \[
+      \sum_{i=1}^{n} \sum_{j=1}^{n}\,  f_{ij} \cdot d_{\pi(i)\pi(j)} \to \min
+    \]
+    }
+  \end{block}
 
-  \begin{block}{Border Length Minimization}
+  \begin{block}{Example: Facility Location Problem }
+    \begin{itemize}
+      \item Assign $n$ \alert{facilities} to $n$ \alert{locations}
+      \item $f_{ij}$: \alert{flow} of materials from facility $i$ to $j$
+      \item $d_{kl}$: \alert{distance} between locations $k$ and $l$
+      \item $\pi$: one-to-one assignment with minimum cost
+    \end{itemize}
+  \end{block}
+
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{QAP Formulation of Placement Problem}
+
+  \begin{block}{Goal: find a \alert{placement} with}
+    \footnotesize{
+    \[
+      \sum_{k} \mathcal{C}(k) \to \min
+    \]
+    }
+  \end{block}
+
+  \begin{block}{Flow}
+    \footnotesize{
+    \[
+    f_{ij} :=
+    \left\{
+    \begin{array}{ll}
+    (d(i,j))^{-2} & \mbox{if spot $j$ is ``near'' spot $i$,} \\
+                0 & \mbox{otherwise} \\
+    \end{array}
+    \right.
+    \]
+    }
+  \end{block}
+
+  \begin{block}{Distance}
+    \footnotesize{
+    \[
+      d_{kl} := \sum_{t=1}^T\, d_{klt},
+    \]
+    }
+    %%
+    \footnotesize{
+    \[
+      d_{klt} := \left\{ \begin{array}{ll}
+      c \cdot \exp(\theta \cdot \lambda(p_k,t)) 
+        & \mbox{if $p_k$ is masked and $p_l$ unmasked in step $t$,}\\
+      0 & \mbox{otherwise}
+      \end{array} \right.
+    \]
+    }
+  \end{block}
+
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{QAP Heuristics}
+
+  \begin{itemize}
+    \item The placement problem can be modeled as a QAP
+    \item But QAP is known to be NP-hard
+    \begin{itemize}
+      \item Generally impossible to solve (to optimalliy) for $n \geq 20$
+    \end{itemize}
+    \item Several \alert{heuristics} exist
+  \end{itemize}
+
+  \begin{block}{GRASP (Li, Pardalos and Resende, 1994)}
+    \begin{itemize}
+      \item Greedy Randomized Adaptive Search Procedure
+      \item Comprised of two phases
+      \begin{itemize}
+        \item[1)] Construction: buids a random feasible solution
+        \item[2)] Local search: search a local optimum in the neighborhood
+      \end{itemize}
+      \item GRASP with Path-Relinking (Oliveira {\it et~al}., 2004)
+    \end{itemize}
+  \end{block}
+
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Results on Small Artificial Chips}
+
+  \begin{block}{Border Length minimization}
     \scriptsize{
     \centerline{
-    \begin{tabular}{c|rr|rr|rr|rr}
-& \multicolumn{2}{c|}{$t_{max}=0$} & \multicolumn{2}{c|}{$t_{max}=2$} & \multicolumn{2}{c|}{$t_{max}=4$} & \multicolumn{2}{c}{$t_{max}=6$} \\
-Dim & \multicolumn{1}{c}{Cost} & \multicolumn{1}{c|}{Time} & \multicolumn{1}{c}{Cost} & \multicolumn{1}{c|}{Time} & \multicolumn{1}{c}{Cost} & \multicolumn{1}{c|}{Time} & \multicolumn{1}{c}{Cost} & \multicolumn{1}{c}{Time} \\ \noalign{\smallskip} \hline \noalign{\smallskip}
-100$\times$100 & 42.77 &     34 & 39.19 &     13 & 40.72 &     10 & 42.11 &  11 \\
-200$\times$200 & 41.63 &    429 & 37.30 &    155 & 38.53 &     62 & 40.00 &  85 \\
-300$\times$300 & 41.38 & 1\,174 & 36.12 &    766 & 37.22 &    264 & 38.53 & 139 \\
-500$\times$500 & 41.27 & 3\,524 & 34.69 & 3\,472 & 35.50 & 1\,996 & 36.58 & 713 \\
+    \begin{tabular}{c|r|rrr|rrr}
+    & Random & \multicolumn{3}{|c}{Row-epitaxial} & \multicolumn{3}{|c}{GRASP with Path-Relinking}  \\ \noalign{\smallskip} \cline{2-8} \noalign{\smallskip}
+Dim & Cost   & Cost & Red. & Time & Cost & Red. & Time \\ \noalign{\smallskip} \hline \noalign{\smallskip}
+6$\times$6   & 1\,989.20 & 1\,714.60 & 13.80 & 0.01 & \color{green!85!black} 1\,672.20 & \color{green!85!black} 15.94 & \color{red}    2.73 \\
+7$\times$7   & 2\,783.20 & 2\,354.60 & 15.40 & 0.02 & \color{green!85!black} 2\,332.60 & \color{green!85!black} 16.19 & \color{red}    6.43 \\
+8$\times$8   & 3\,721.20 & 3\,123.80 & 16.05 & 0.03 & \color{green!85!black} 3\,099.13 & \color{green!85!black} 16.72 & \color{red}  12.49 \\
+9$\times$9   & 4\,762.00 & 3\,974.80 & 16.53 & 0.05 & \color{green!85!black} 3\,967.20 & \color{green!85!black} 16.69 & \color{red}  25.96 \\
+10$\times$10 & 5\,985.20 & 4\,895.60 & 18.20 & 0.06 & \color{red}            4\,911.40 & \color{red}            17.94 & \color{red}  47.57 \\
+11$\times$11 & 7\,288.40 & 5\,954.40 & 18.30 & 0.10 & \color{red}            5\,990.73 & \color{red}            17.80 & \color{red}  87.48 \\
+12$\times$12 & 8\,714.00 & 7\,086.20 & 18.68 & 0.11 & \color{red}            7\,159.80 & \color{red}            17.84 & \color{red} 152.42 \\
     \end{tabular}}
     }
   \end{block}
   
   \scriptsize{
-    $t_{max}$: maximum partitioning depth \\
     Dim: chip dimension \\
-    Cost: \alert{normalized border length} \\
+    Cost: \alert{total border length} \\
+    Red.: reduction in \% \\
     Time: running time in seconds
   }
   
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Results on Random Chips}
-
-  Using Row-epitaxial for the placement (with $Q = 2\,000$), followed by
-  Sequential re-embedding
+\frame{\frametitle{Results on Small Artificial Chips}
 
   \begin{block}{Conflict Index minimization}
     \scriptsize{
     \centerline{
-    \begin{tabular}{c|rr|rr|rr|rr}
-& \multicolumn{2}{c|}{$t_{max}=0$} & \multicolumn{2}{c|}{$t_{max}=2$} & \multicolumn{2}{c|}{$t_{max}=4$} & \multicolumn{2}{c}{$t_{max}=6$} \\
-Dim & \multicolumn{1}{c}{Cost} & \multicolumn{1}{c|}{Time} & \multicolumn{1}{c}{Cost} & \multicolumn{1}{c|}{Time} & \multicolumn{1}{c}{Cost} & \multicolumn{1}{c|}{Time} & \multicolumn{1}{c}{Cost} & \multicolumn{1}{c}{Time} \\ \noalign{\smallskip} \hline \noalign{\smallskip}
-100$\times$100 & 514.49 &     45 & 453.67 &     37 & 467.78 &     19 & 475.44 &     15 \\
-200$\times$200 & 517.07 &    192 & 466.22 &    215 & 452.41 &    166 & 462.55 &     99 \\
-300$\times$300 & 518.51 &    438 & 475.84 &    524 & 452.00 &    466 & 448.17 &    336 \\
-500$\times$500 & 517.50 & 1\,471 & 481.36 & 1\,530 & 462.33 & 1\,472 & 445.43 & 1\,295 \\
+    \begin{tabular}{c|r|rrr|rrr}
+    & Random & \multicolumn{3}{|c}{Row-epitaxial} & \multicolumn{3}{|c}{GRASP with Path-Relinking}  \\ \noalign{\smallskip} \cline{2-8} \noalign{\smallskip}
+Dim & Cost   & Cost & Red. & Time & Cost & Red. & Time \\ \noalign{\smallskip} \hline \noalign{\smallskip}
+6$\times$6   & 524.28 & 495.15 & 5.56 & 0.05 & \color{green!85!black} 467.08 & \color{green!85!black} 10.91 & \color{red}   3.68 \\
+7$\times$7   & 558.25 & 521.90 & 6.51 & 0.07 & \color{green!85!black} 489.32 & \color{green!85!black} 12.35 & \color{red}   8.84 \\
+8$\times$8   & 590.51 & 551.84 & 6.55 & 0.09 & \color{green!85!black} 515.69 & \color{green!85!black} 12.67 & \color{red}  19.48 \\
+9$\times$9   & 613.25 & 568.62 & 7.28 & 0.11 & \color{green!85!black} 533.79 & \color{green!85!black} 12.96 & \color{red}  38.83 \\
+10$\times$10 & 628.50 & 576.49 & 8.28 & 0.11 & \color{green!85!black} 539.69 & \color{green!85!black} 14.13 & \color{red}  73.09 \\
+11$\times$11 & 642.72 & 588.91 & 8.37 & 0.12 & \color{green!85!black} 551.41 & \color{green!85!black} 14.21 & \color{red} 145.67 \\
+12$\times$12 & 656.86 & 598.21 & 8.93 & 0.12 & \color{green!85!black} 561.21 & \color{green!85!black} 14.56 & \color{red} 249.19 \\
     \end{tabular}}
     }
   \end{block}
 
   \scriptsize{
-    $t_{max}$: maximum partitioning depth \\
     Dim: chip dimension \\
     Cost: \alert{average conflict index} \\
+    Red.: reduction in \% \\
     Time: running time in seconds
   }
 
@@ -555,12 +603,17 @@ Dim & \multicolumn{1}{c}{Cost} & \multicolumn{1}{c|}{Time} & \multicolumn{1}{c}{
       \item New model for evaluating microarray layouts
     \end{itemize}
     \item \alert{New approach to placement}
+    \begin{itemize}
+      \item Based on the Quadratic Assignment Problem
+      \item Good for very small regions... but too slow!
+    \end{itemize}
   \end{itemize}
   
   \vspace*{0.3cm}
   \begin{itemize}
     \item Challenges
     \begin{itemize}
+      \item Make it faster?
       \item Use it as a post-placement optimization
       \item Formulation considering all embeddings
     \end{itemize}
