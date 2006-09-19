@@ -85,9 +85,9 @@ Graduiertenkolleg Bioinformatik
 
   \vspace*{0.4cm}
   \centerline{
-    \includegraphics[height=1.3cm]{pics/aggi_logo.png}
+    \includegraphics[height=1.3cm]{pics/aggi_logo.jpg}
     \hspace*{0.6cm}
-    \includegraphics[height=1.3cm]{pics/gsbg_logo.png}
+    \includegraphics[height=1.3cm]{pics/gsbg_logo.jpg}
   }
   
   \titlepage
@@ -346,8 +346,10 @@ Graduiertenkolleg Bioinformatik
     \item Then $\sum_p\,\mathcal{C}(p) = \sum_{t=1}^T\, \mathcal{B}_t$
     \item Border length and conflict indices are equivalent for this choice of
           $\delta$ and $\omega$
-    \item For our choices, they are not equivalent but still \alert{correlated}:
-          a good layout has low border lengths and conflict indices
+    \item For our choices, they are not equivalent but still \alert{correlated}
+    \begin{itemize}
+      \item A good layout has low border lengths and conflict indices
+    \end{itemize}
   \end{itemize}
 
 }
@@ -471,7 +473,7 @@ Graduiertenkolleg Bioinformatik
     }
   \end{block}
 
-  \begin{block}{Flow}
+  \begin{block}{``Flow'' $f_{ij}$: distance between spots $i$ and $j$}
     \footnotesize{
     \[
     f_{ij} :=
@@ -485,7 +487,7 @@ Graduiertenkolleg Bioinformatik
     }
   \end{block}
 
-  \begin{block}{Distance}
+  \begin{block}{``Distance'' $d_{kl}$: conflicts between probes $k$ and $l$}
     \footnotesize{
     \[
       d_{kl} := \sum_{t=1}^T\, d_{klt},
@@ -495,8 +497,8 @@ Graduiertenkolleg Bioinformatik
     \footnotesize{
     \[
       d_{klt} := \left\{ \begin{array}{ll}
-      c \cdot \exp(\theta \cdot \lambda(p_k,t)) 
-        & \mbox{if $p_k$ is masked and $p_l$ unmasked in step $t$,}\\
+      c \cdot \exp(\theta \cdot \lambda(k,t)) 
+        & \mbox{if $k$ is masked and $l$ unmasked in step $t$,}\\
       0 & \mbox{otherwise}
       \end{array} \right.
     \]
@@ -512,7 +514,7 @@ Graduiertenkolleg Bioinformatik
     \item The placement problem can be modeled as a QAP
     \item But QAP is known to be NP-hard
     \begin{itemize}
-      \item Generally impossible to solve (to optimalliy) for $n \geq 20$
+      \item Generally impossible to solve (to optimallity) for $n \geq 20$
     \end{itemize}
     \item Several \alert{heuristics} exist
   \end{itemize}
@@ -589,6 +591,43 @@ Dim & Cost   & Cost & Red. & Time & Cost & Red. & Time \\ \noalign{\smallskip} \
 
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{Applications}
+
+  \begin{columns}
+  
+    \begin{column}{0.60\textwidth}
+      \begin{itemize}
+        \item QAP is good for small regions...
+        \begin{itemize}
+          \item But not feasible for an entire microarray chip
+        \end{itemize}
+        \onslide+<2->
+        \item Two applications:
+          \begin{itemize}
+            \item[1)] Combine it with a \alert{partitioning algorithm}
+            \onslide+<3->
+            \item[2)] Use it as a \alert{post-placement} optimization inside a
+                      sliding-window
+          \end{itemize}
+      \end{itemize}
+    \end{column}
+
+    \begin{column}{0.40\textwidth}
+      \begin{overprint}
+        \onslide+<3>\centerline{\includegraphics[width=\textwidth]{pics/optimization1.jpg}}
+        \onslide+<4->\centerline{\includegraphics[width=\textwidth]{pics/optimization2.jpg}}
+      \end{overprint}
+    \end{column}
+    
+  \end{columns}
+  
+  \vspace*{0.3cm}
+  
+  \onslide+<2->\centerline{\includegraphics[width=0.8\textwidth]{pics/pivotpart.jpg}}
+
+}
+
 %% *****************************************************************************
 \section*{Summary}
 \subsection*{Dummy}
@@ -605,7 +644,6 @@ Dim & Cost   & Cost & Red. & Time & Cost & Red. & Time \\ \noalign{\smallskip} \
     \item \alert{New approach to placement}
     \begin{itemize}
       \item Based on the Quadratic Assignment Problem
-      \item Good for very small regions... but too slow!
     \end{itemize}
   \end{itemize}
   
@@ -613,8 +651,8 @@ Dim & Cost   & Cost & Red. & Time & Cost & Red. & Time \\ \noalign{\smallskip} \
   \begin{itemize}
     \item Challenges
     \begin{itemize}
-      \item Make it faster?
-      \item Use it as a post-placement optimization
+      \item Faster or better heuristics?
+      \item Adapt QAP for post-placement optimization
       \item Formulation considering all embeddings
     \end{itemize}
   \end{itemize}
