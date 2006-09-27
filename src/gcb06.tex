@@ -315,20 +315,6 @@ Graduiertenkolleg Bioinformatik
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{New Problem}
-
-  \begin{block}{Conflict Index Minimization Problem}
-    Find placement of the probes and embeddings such that
-    \footnotesize{
-    \[
-    \sum_{p} \mathcal{C}(p) \to \min
-    \]
-    }
-  \end{block}
-
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{Border Length and Conflict Index}
 
   \begin{block}{Redefine $\delta$ and $\omega$ as}
@@ -358,8 +344,8 @@ Graduiertenkolleg Bioinformatik
   
   \begin{itemize}
     \item Then $\sum_p\,\mathcal{C}(p) = \sum_{t=1}^T\, \mathcal{B}_t$
-    \item Border length and conflict indices are equivalent for this choice of
-          $\delta$ and $\omega$
+    \item Total border length can be modeled as total conflict index for a
+          particular choice of $\delta$ and $\omega$
     \item For our choices, they are not equivalent but still \alert{correlated}
     \begin{itemize}
       \item A good layout has low border lengths and conflict indices
@@ -367,6 +353,21 @@ Graduiertenkolleg Bioinformatik
   \end{itemize}
 
 }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{New Problem}
+
+  \begin{block}{Conflict Index Minimization Problem}
+    Find placement of the probes and embeddings such that
+    \footnotesize{
+    \[
+    \sum_{p} \mathcal{C}(p) \to \min
+    \]
+    }
+  \end{block}
+
+}
+
 
 %% *****************************************************************************
 \section[QAP Formulation]{New Approach: Quadratic Assignment Problem (QAP)}
