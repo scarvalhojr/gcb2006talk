@@ -315,6 +315,20 @@ Graduiertenkolleg Bioinformatik
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{New Problem}
+
+  \begin{block}{Conflict Index Minimization Problem}
+    Find placement of the probes and embeddings such that
+    \footnotesize{
+    \[
+    \sum_{p} \mathcal{C}(p) \to \min
+    \]
+    }
+  \end{block}
+
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{Border Length and Conflict Index}
 
   \begin{block}{Redefine $\delta$ and $\omega$ as}
@@ -351,20 +365,6 @@ Graduiertenkolleg Bioinformatik
       \item A good layout has low border lengths and conflict indices
     \end{itemize}
   \end{itemize}
-
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{New Problem}
-
-  \begin{block}{Conflict Index Minimization Problem}
-    Find placement of the probes and embeddings such that
-    \footnotesize{
-    \[
-    \sum_{p} \mathcal{C}(p) \to \min
-    \]
-    }
-  \end{block}
 
 }
 
@@ -436,7 +436,7 @@ Graduiertenkolleg Bioinformatik
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{\frametitle{Quadratic Assignment Problem}
+\frame{\frametitle{Quadratic Assignment Problem (QAP)}
 
   \begin{block}{Definition}
     \begin{itemize}
@@ -462,10 +462,40 @@ Graduiertenkolleg Bioinformatik
 
 }
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{\frametitle{QAP Formulation of Placement Problem}
 
-  \begin{block}{Goal: find a \alert{placement} with}
+  \begin{block}{QAP}
+    \begin{itemize}
+      \item Given $n \times n$ real-valued matrices $F$ and $D$
+      \item Find a permutation $\pi$ of $\{1, 2, \ldots n\}$ such that
+    \end{itemize}
+    \footnotesize{
+    \[
+      \sum_{i=1}^{n} \sum_{j=1}^{n}\,  f_{ij} \cdot d_{\pi(i)\pi(j)} \to \min
+    \]
+    }
+  \end{block}
+
+  \begin{block}{Placement as a QAP}
+    \begin{itemize}
+      \item Given a set of probes with \alert{fixed} embeddings
+      \item Find \alert{placement} on the chip such that
+    \end{itemize}
+    \footnotesize{
+    \[
+      \sum_{k} \mathcal{C}(k) \to \min
+    \]
+    }
+  \end{block}
+
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{\frametitle{QAP Formulation of Placement Problem}
+
+  \begin{block}{Goal: find a placement with}
     \footnotesize{
     \[
       \sum_{k} \mathcal{C}(k) \to \min
@@ -514,7 +544,7 @@ Graduiertenkolleg Bioinformatik
     \item The placement problem can be modeled as a QAP
     \item But QAP is known to be NP-hard
     \begin{itemize}
-      \item Generally impossible to solve (to optimallity) for $n \geq 20$
+      \item Generally impossible to solve (to optimality) for $n \geq 20$
     \end{itemize}
     \item Several \alert{heuristics} exist
   \end{itemize}
@@ -524,7 +554,7 @@ Graduiertenkolleg Bioinformatik
       \item Greedy Randomized Adaptive Search Procedure
       \item Comprised of two phases
       \begin{itemize}
-        \item[1)] Construction: buids a random feasible solution
+        \item[1)] Construction: builds a random feasible solution
         \item[2)] Local search: search a local optimum in the neighborhood
       \end{itemize}
       \item GRASP with Path-Relinking (Oliveira {\it et~al}., 2004)
@@ -651,7 +681,7 @@ Dim & Cost   & Cost & Red. & Time & Cost & Red. & Time \\ \noalign{\smallskip} \
   \begin{itemize}
     \item Challenges
     \begin{itemize}
-      \item Faster or better heuristics?
+      \item Faster or better QAP heuristics?
       \item Adapt QAP for post-placement optimization
       \item Formulation considering all embeddings
     \end{itemize}
